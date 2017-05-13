@@ -47,6 +47,12 @@ var markerView = {
                 map: baseMap,
                 title: item.name
             });
+            var infowindow = new google.maps.InfoWindow({
+                content: item.name
+            });
+            marker.addListener("click", function () {
+                infowindow.open(baseMap, marker);
+            });
         });
     }
 };
