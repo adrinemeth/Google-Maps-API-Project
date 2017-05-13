@@ -36,6 +36,7 @@ var mapView = {
             center: amsterdam
         });
         markerView.render(markers, map);
+        markerList.init(map);
     }
 };
 var markerView = {
@@ -48,5 +49,34 @@ var markerView = {
                 title: item.name
             });
         });
+    }
+};
+var markerList = {
+    init: function(baseMap) {
+      markerList.render(baseMap);
+      markerList.update();
+    },
+    render: function(baseMap) {
+      var markers = controller.getMarkers();
+      this.markerListElem = document.getElementById("marker-list");
+      var length = markers.length;
+      for (var i = 1; i < length; i++) {
+        // Create the list item:
+        var marker = markers[i];
+        var item = document.createElement("a");
+        var listElem = document.createElement("li");
+        // Set its contents:
+        item.textContent = marker.name;
+        function getPosition(x) {
+          return function() {
+            baseMap.setZoom(15);
+            baseMap.setCenter(x);
+          };
+        }
+        item.addEventListener("click", getPosition(marker.position));
+        // Add it to the list:
+        listElem.appendChild(item);
+        this.markerListElem.appendChild(listElem);
+      }
     }
 };
